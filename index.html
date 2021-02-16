@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css"></link>
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="wrapper center">
+      <div class="wrapper__title">White Rose App</div>
+      <div class="content-text">
+        <ul class="content-text__list-container">
+        </ul>
+      </div>
+      <span class="loading-bar">Sto scaricando i dati</span>
+      <div class="buttons-container">
+        <div class="inputFile" style="display: inline;">
+          <label for="inputFile__input" id="inputFile__label" class="btn">Inserisci file</label>
+          <input type="file" accept=".txt" id="inputFile__input" style="display: none;"/>
+        </div>
+        <div class="downloadFiles" style="display: inline;">
+          <label class="downloadFiles__users btn">Avvia</label>
+        </div>
+      </div>
+    </div>
+    <script src="./scripts/handleDom.js" type="module"></script>
+  </body>
+</html>
