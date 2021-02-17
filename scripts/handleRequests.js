@@ -4,9 +4,9 @@ const fetchMatches = async (username) => {
   );
   const json = await req.json();
   console.log(json);
-  return req.status === 200
-    ? { [username]: json.data.stats.all.overall.matches }
-    : { [username]: null };
+  //   return req.status === 200
+  //     ? { [username]: json.data.stats.all.overall.matches }
+  //     : { [username]: null };
 };
 
 export default fetchMatches;
