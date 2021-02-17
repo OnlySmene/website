@@ -28,7 +28,6 @@ const downloadFiles = (...objs) => {
     zip.file(`${element}.txt`, filteredMatches[element].join("\n"));
   }
 
-  console.log(zip);
   zip.generateAsync({ type: "blob" }).then(function (blob) {
     saveAs(blob, "results.zip");
   });
@@ -80,7 +79,6 @@ const handleFilesContent = (obj) => {
   });
 
   downloadFiles(validUsers, invalidUsers, filteredMatches);
-  return [validUsers, invalidUsers, filteredMatches];
 };
 
 export { getFileText, downloadFiles, handleFilesContent };
