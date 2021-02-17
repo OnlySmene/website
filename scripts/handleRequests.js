@@ -8,7 +8,7 @@ const fetchMatches = async (username) => {
       ? { [username]: json.data.stats.all.overall.matches }
       : { [username]: null };
   } catch (err) {
-    // console.log(err.message);
+    console.log(err);
   }
 };
 
