@@ -5,36 +5,82 @@ const getFileText = (file) =>
     reader.readAsText(file);
   });
 
-const download = (filename, text) => {
-  var element = document.createElement("a");
-  element.setAttribute("href", "data:text/plain;base64," + btoa(text));
-  element.setAttribute("download", filename);
+// const download = (filename, text) => {
+//   var element = document.createElement("a");
+//   element.setAttribute("href", "data:text/plain;base64," + btoa(text));
+//   element.setAttribute("download", filename);
 
-  element.style.display = "none";
-  document.body.appendChild(element);
+//   element.style.display = "none";
+//   document.body.appendChild(element);
 
-  element.click();
+//   element.click();
 
-  document.body.removeChild(element);
+//   document.body.removeChild(element);
+// };
+
+const downloadFiles = (...objs) => {
+  const [validUsers, invalidUsers, filteredMatches] = objs;
+  const zip = new JSZip();
+
+  zip.file("validUsers.txt", validUsers.join("\n"));
+  zip.file("invalidUsers.txt", invalidUsers.join("\n"));
+  for (let element in filteredMatches) {
+    zip.file(`${element}.txt`, filteredMatches[element].join("\n"));
+  }
+
+  console.log(zip);
+  zip.generateAsync({ type: "blob" }).then(function (blob) {
+    saveAs(blob, "results.zip");
+  });
 };
 
-const handleUsers = (obj) => {
-  const availableUsers = [];
-  const notAvailableUsers = [];
+const handleFilesContent = (obj) => {
+  const validUsers = [];
+  const invalidUsers = [];
+  const filteredMatches = {
+    $100: [],
+    $100_500: [],
+    $500_2000: [],
+    $2000_5000: [],
+    $5000_10000: [],
+    $10000: [],
+  };
 
-  for (let o of obj) {
-    let username = Object.keys(o)[0];
-    const matches = o[username];
+  obj.forEach((element) => {
+    let username = Object.keys(element)[0];
+    const matches = element[username];
     username = username.split(atob("DQ==")).join("");
 
+    const format = `${username}:${matches}`;
     if (matches) {
-      availableUsers.push(`${username}:${matches}`);
+      switch (true) {
+        case matches < 100:
+          filteredMatches.$100.push(format);
+          break;
+        case matches > 100 && matches < 500:
+          filteredMatches.$100_500.push(format);
+          break;
+        case matches > 500 && matches < 200:
+          filteredMatches.$500_2000.push(format);
+          break;
+        case matches > 2000 && matches < 5000:
+          filteredMatches.$2000_5000.push(format);
+          break;
+        case matches > 5000 && matches < 1000:
+          filteredMatches.$5000_10000.push(format);
+          break;
+        case matches > 10000:
+          filteredMatches.$10000.push(format);
+          break;
+      }
+      validUsers.push(format);
     } else {
-      notAvailableUsers.push(username);
+      invalidUsers.push(username);
     }
-  }
-  console.log(availableUsers);
-  return [availableUsers.join("\n"), notAvailableUsers.join("\n")];
+  });
+
+  downloadFiles(validUsers, invalidUsers, filteredMatches);
+  return [validUsers, invalidUsers, filteredMatches];
 };
 
-export { getFileText, download, handleUsers };
+export { getFileText, downloadFiles, handleFilesContent };

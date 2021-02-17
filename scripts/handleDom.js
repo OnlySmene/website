@@ -1,5 +1,9 @@
 import fetchMatches from "./handleRequests.js";
-import { getFileText, download, handleUsers } from "./handleFile.js";
+import {
+  getFileText,
+  downloadFiles,
+  handleFilesContent,
+} from "./handleFile.js";
 
 var canStart = false;
 var isReady = false;
@@ -37,6 +41,7 @@ inputFile.onchange = async (e) => {
 downloadFile.onclick = async (e) => {
   if (canStart && !isLoading) {
     isLoading = true;
+    downloadFile.classList.remove("ready");
 
     loadingBar.style.display = "block";
     const results = [];
@@ -46,10 +51,12 @@ downloadFile.onclick = async (e) => {
     }
 
     loadingBar.style.display = "none";
-    isLoading = false;
 
-    const [availableUsers, notAvailableUsers] = handleUsers(results);
-    download("availableUsers.txt", availableUsers);
-    download("notAvailableUsers.txt", notAvailableUsers);
+    handleFilesContent(results);
+    downloadFile.classList.add("ready");
+    isLoading = false;
+    // const [availableUsers, notAvailableUsers] = handleUsers(results);
+    // download("availableUsers.txt", availableUsers);
+    // download("notAvailableUsers.txt", notAvailableUsers);
   }
 };
