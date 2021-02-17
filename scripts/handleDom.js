@@ -52,7 +52,7 @@ downloadFile.onclick = async (e) => {
 
     loadingBar.style.display = "none";
 
-    handleFilesContent(results);
+    // handleFilesContent(results);
     downloadFile.classList.add("ready");
     isLoading = false;
     // const [availableUsers, notAvailableUsers] = handleUsers(results);
