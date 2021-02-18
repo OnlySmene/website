@@ -8,7 +8,9 @@ const fetchMatches = async (username) => {
       ? { [username]: json.data.stats.all.overall.matches }
       : { [username]: null };
   } catch (err) {
-    console.log(err);
+    return err.message == "Cannot read property 'matches' of null"
+      ? { [username]: "private" }
+      : { [username]: null };
   }
 };
 

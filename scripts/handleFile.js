@@ -5,38 +5,26 @@ const getFileText = (file) =>
     reader.readAsText(file);
   });
 
-// const download = (filename, text) => {
-//   var element = document.createElement("a");
-//   element.setAttribute("href", "data:text/plain;base64," + btoa(text));
-//   element.setAttribute("download", filename);
-
-//   element.style.display = "none";
-//   document.body.appendChild(element);
-
-//   element.click();
-
-//   document.body.removeChild(element);
-// };
-
 const downloadFiles = (...objs) => {
-  const [validUsers, invalidUsers, filteredMatches] = objs;
+  const [validUsers, invalidUsers, privateUsers, filteredMatches] = objs;
   const zip = new JSZip();
 
   zip.file("validUsers.txt", validUsers.join("\n"));
   zip.file("invalidUsers.txt", invalidUsers.join("\n"));
+  zip.file("privateUsers.txt", privateUsers.join("\n"));
   for (let element in filteredMatches) {
     zip.file(`${element}.txt`, filteredMatches[element].join("\n"));
   }
 
-  console.log(zip);
   zip.generateAsync({ type: "blob" }).then(function (blob) {
-    saveAs(blob, "results.zip");
+    saveAs(blob, `results.zip`);
   });
 };
 
 const handleFilesContent = (obj) => {
   const validUsers = [];
   const invalidUsers = [];
+  const privateUsers = [];
   const filteredMatches = {
     $100: [],
     $100_500: [],
@@ -54,6 +42,9 @@ const handleFilesContent = (obj) => {
     const format = `${username}:${matches}`;
     if (matches) {
       switch (true) {
+        case matches == "private":
+          privateUsers.push(username);
+          break;
         case matches < 100:
           filteredMatches.$100.push(format);
           break;
@@ -73,14 +64,13 @@ const handleFilesContent = (obj) => {
           filteredMatches.$10000.push(format);
           break;
       }
-      validUsers.push(format);
+      if (matches !== "private") validUsers.push(format);
     } else {
       invalidUsers.push(username);
     }
   });
 
-  downloadFiles(validUsers, invalidUsers, filteredMatches);
-  return [validUsers, invalidUsers, filteredMatches];
+  downloadFiles(validUsers, invalidUsers, privateUsers, filteredMatches);
 };
 
 export { getFileText, downloadFiles, handleFilesContent };
