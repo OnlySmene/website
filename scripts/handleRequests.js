@@ -6,11 +6,11 @@ const fetchMatches = async (username) => {
   try {
     return req.status === 200
       ? { [username]: json.data.stats.all.overall.matches }
-      : { [username]: null };
-  } catch (err) {
-    return err.message == "Cannot read property 'matches' of null"
+      : req.status === 403
       ? { [username]: "private" }
       : { [username]: null };
+  } catch (err) {
+    return { [username]: null };
   }
 };
 
