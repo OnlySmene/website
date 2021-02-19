@@ -51,13 +51,13 @@ const handleFilesContent = (obj) => {
         case matches > 100 && matches < 500:
           filteredMatches.$100_500.push(format);
           break;
-        case matches > 500 && matches < 200:
+        case matches > 500 && matches < 2000:
           filteredMatches.$500_2000.push(format);
           break;
         case matches > 2000 && matches < 5000:
           filteredMatches.$2000_5000.push(format);
           break;
-        case matches > 5000 && matches < 1000:
+        case matches > 5000 && matches < 10000:
           filteredMatches.$5000_10000.push(format);
           break;
         case matches > 10000:
