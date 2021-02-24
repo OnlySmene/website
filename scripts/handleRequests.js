@@ -1,5 +1,6 @@
 const fetchMatches = async (data) => {
   const username = data.split(":")[2];
+  console.log(username);
   const req = await fetch(
     `https://fortnite-api.com/v1/stats/br/v2?name=${username}`
   );

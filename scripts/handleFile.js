@@ -39,7 +39,7 @@ const handleFilesContent = (obj) => {
     const matches = element[data];
     data = data.split(atob("DQ==")).join("");
 
-    const format = `${usdataername}:${matches}`;
+    const format = `${data}:${matches}`;
     if (matches) {
       switch (true) {
         case matches == "private":
