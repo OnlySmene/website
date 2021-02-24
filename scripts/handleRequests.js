@@ -1,16 +1,17 @@
-const fetchMatches = async (username) => {
+const fetchMatches = async (data) => {
+  const username = data.split(":")[2];
   const req = await fetch(
     `https://fortnite-api.com/v1/stats/br/v2?name=${username}`
   );
   const json = await req.json();
   try {
     return req.status === 200
-      ? { [username]: json.data.stats.all.overall.matches }
+      ? { [data]: json.data.stats.all.overall.matches }
       : req.status === 403
-      ? { [username]: "private" }
-      : { [username]: null };
+      ? { [data]: "private" }
+      : { [data]: null };
   } catch (err) {
-    return { [username]: null };
+    return { [data]: null };
   }
 };
 

@@ -35,15 +35,15 @@ const handleFilesContent = (obj) => {
   };
 
   obj.forEach((element) => {
-    let username = Object.keys(element)[0];
-    const matches = element[username];
-    username = username.split(atob("DQ==")).join("");
+    let data = Object.keys(element)[0];
+    const matches = element[data];
+    data = data.split(atob("DQ==")).join("");
 
-    const format = `${username}:${matches}`;
+    const format = `${usdataername}:${matches}`;
     if (matches) {
       switch (true) {
         case matches == "private":
-          privateUsers.push(username);
+          privateUsers.push(data);
           break;
         case matches < 100:
           filteredMatches.$100.push(format);
@@ -66,7 +66,7 @@ const handleFilesContent = (obj) => {
       }
       if (matches !== "private") validUsers.push(format);
     } else {
-      invalidUsers.push(username);
+      invalidUsers.push(data);
     }
   });
 
